@@ -1,8 +1,70 @@
-import React from 'react'
-
+import React, {Component} from 'react'
+import './App.css'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
+import BookInShelf from './BookInShelf'
 
-const SearchBar = (props) => {
+class SearchBar extends Component {
+
+  state = { 
+            searchQuery:'',
+            books:[] 
+
+          }
+  
+  updateQuery = (query) => {
+
+      console.log(query);
+
+      if (query === '') {
+        this.setState({
+          books:[], 
+          searchQuery:''
+        })
+      }
+
+      if (query.length > 0)
+      {
+        BooksAPI.search(query, 20)
+          .then((booksresult)=>{
+          
+            booksresult.length > 0 ? 
+              this.setState({
+                books:booksresult,
+                searchQuery:query
+              }) : 
+              this.setState({
+                books:[],
+                searchQuery:''
+              })
+
+              console.log(this.state.books);
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+      } else {
+        this.clearQuery();
+      }
+  }
+
+  clearQuery = () => {
+    this.setState({
+      books:[],
+      searchQuery:''
+    })
+
+    console.log("State Cleared");
+    console.log(this.state.books);
+
+  }
+
+  render () {
+    
+    const { onMoveBookToShelfHandler } = this.props;
+    const  booksSearchResult  = this.state.books;
+    console.log("Render Called");
+    console.log(this.state.books);
 
     return (
         <div className="search-books">
@@ -18,15 +80,31 @@ const SearchBar = (props) => {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                <input type="text" placeholder="Search by title or author"/>
+                <input type="text" placeholder="Search by title or author" value={this.state.searchquery} onChange={ (event) => this.updateQuery(event.target.value) }/>
 
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">                    
+                    { 
+                        booksSearchResult.length > 0 && booksSearchResult.map( (book) => (
+                            
+                            
+                            
+                            <li key={book.id}>
+                                <BookInShelf 
+                                    book={book} 
+                                    onMoveBookToShelfHandler={onMoveBookToShelfHandler}/>
+                            </li>
+                            )
+                        )
+                    }
+                </ol>
+              
             </div>
           </div>
     )
+    }
 }
 
 export default SearchBar;
