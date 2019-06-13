@@ -20,10 +20,45 @@ class BooksApp extends React.Component {
     connectionSuccessful: true
   }
 
+  moveBookToShelfHandler = (book, shelfName) => {
+    
+    if (shelfName !== 'none')
+    {
+      BooksAPI.update(book, shelfName)
+        .then((response) => {
+          //console.log(response);
+
+          book.shelf = shelfName
+          console.log(this.state);
+
+          this.setState((prevState)=>({
+            books: prevState.books
+                  .filter( prevbook => prevbook.id !== book.id)
+                  .concat( book)
+          }))
+
+
+        })
+    }
+
+  }
+
+  searchBooks = (searchQuery) => {
+
+    BooksAPI.search(searchQuery)
+      .then((searchResults) => {
+        console.log(searchResults);
+      })
+
+  }
+
   getAllBooks = () => {
     BooksAPI.getAll()
     .then((books)=>{
 
+      this.setState({books})
+
+      /*
       let currentlyReading = [], wantToRead = [], readBook = [];
 
       books.map( (book) => {
@@ -41,15 +76,13 @@ class BooksApp extends React.Component {
           
           readBook.push(book);
         }
-
+        
       }
       
-      )
+      )*/
 
       this.setState({
-        currentlyReading,
-        wantToRead,
-        readBook,
+        
         connectionSuccessful: true 
 
       })
@@ -70,6 +103,7 @@ class BooksApp extends React.Component {
 
   render() {
     
+    const books = this.state.books;
 
     return (
       <div className="app">
@@ -84,9 +118,8 @@ class BooksApp extends React.Component {
             : (
                 <Route exact path='/' render={() => (
                   <BookRack 
-                    currentlyReading={this.state.currentlyReading} 
-                    wantToRead={this.state.wantToRead} 
-                    readBook={this.state.readBook}
+                    books={books}
+                    onMoveBookToShelfHandler ={this.moveBookToShelfHandler }
                   />
                 )}
               />
@@ -94,7 +127,7 @@ class BooksApp extends React.Component {
           }  
 
             <Route exact path='/search' render={() => (
-              <SearchBar />
+              <SearchBar onSearchTextChange={this.searchBooks} onMoveBookToShelfHandler={this.moveBookToShelfHandler} />
             )} />
             <div className="open-search">
                 <Link to='/search'><button>Add Book</button></Link>
