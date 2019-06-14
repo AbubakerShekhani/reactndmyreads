@@ -1,6 +1,6 @@
-import React from 'react'
-import './App.css'
-import Shelf from './Shelf'
+import React from 'react';
+import './App.css';
+import Shelf from './Shelf';
 
 const BookRack = (props) => {
 
@@ -9,7 +9,7 @@ const BookRack = (props) => {
         { type: 'currentlyReading', title: 'Currently Reading' },
         { type: 'wantToRead', title: 'Want to Read' },
         { type: 'read', title: 'Read' },
-    ]
+    ];
 
     return (
         <div className="list-books-content">

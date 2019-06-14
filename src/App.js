@@ -1,10 +1,10 @@
-import React from 'react'
-import * as BooksAPI from './BooksAPI'
-import './App.css'
-import BookRack from './BookRack'
-import SearchBar from './SearchBar'
-import { Link, Route } from 'react-router-dom'
-import Loader from 'react-loader-spinner'
+import React from 'react';
+import * as BooksAPI from './BooksAPI';
+import './App.css';
+import BookRack from './BookRack';
+import SearchBar from './SearchBar';
+import { Link, Route } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 
 class BooksApp extends React.Component {
 
@@ -26,7 +26,7 @@ class BooksApp extends React.Component {
             .concat(book)
         }))
       })
-  }
+  };
 
   searchBooks = (searchQuery) => {
 
@@ -35,7 +35,7 @@ class BooksApp extends React.Component {
         console.log(searchResults);
       })
 
-  }
+  };
 
   getAllBooks = () => {
     BooksAPI.getAll()
@@ -53,7 +53,7 @@ class BooksApp extends React.Component {
       })
 
     return 1;
-  }
+  };
 
   componentDidMount() {
     this.getAllBooks();
@@ -126,4 +126,4 @@ class BooksApp extends React.Component {
   }
 }
 
-export default BooksApp
+export default BooksApp;

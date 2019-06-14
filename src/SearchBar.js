@@ -1,20 +1,20 @@
-import React, { Component } from 'react'
-import './App.css'
-import { Link } from 'react-router-dom'
-import * as BooksAPI from './BooksAPI'
-import BookInShelf from './BookInShelf'
+import React, { Component } from 'react';
+import './App.css';
+import { Link } from 'react-router-dom';
+import * as BooksAPI from './BooksAPI';
+import BookInShelf from './BookInShelf';
 
 class SearchBar extends Component {
 
   state = {
     searchQuery: '',
     books: []
-  }
+  };
 
   updateQuery = (query) => {
     this.setState({
       searchQuery: query
-    })
+    });
 
     if (query && query.length > 0) {
       BooksAPI.search(query.trim(), 20)
@@ -38,14 +38,14 @@ class SearchBar extends Component {
     if (query.length === 0) {
       this.clearQuery();
     }
-  }
+  };
 
   clearQuery = () => {
     this.setState({
       books: [],
       searchQuery: ''
     })
-  }
+  };
 
   render() {
 

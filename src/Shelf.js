@@ -1,6 +1,6 @@
-import React from 'react'
-import './App.css'
-import BookInShelf from './BookInShelf'
+import React from 'react';
+import './App.css';
+import BookInShelf from './BookInShelf';
 
 const Shelf = (props) => {
 
