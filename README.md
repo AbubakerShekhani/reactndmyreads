@@ -2,7 +2,7 @@
 This is the first project of React Nanodegree program. MyReads application displays a list of books in their relevant shelves such as Currently Reading, Want to Read and Read. The user can move the books into any of these shelves and the books are moved in their desired shelf. The status is also updated on server, therefore, the state is preserved. Furthermore, this React web application allows the user to search for books using book title or author and gives the user ability to add the desired book in any of the book shelf.
 
 # Pre-Requisites
-Node
+Node<br>
 NPM
 
 
