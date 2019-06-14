@@ -18,3 +18,5 @@ Move to the project directory
 # Launch
 <code>npm start</code> OR <code>yarn start</code>
 
+The development server will start and default browser will open with URL http://localhost:3000/
+
