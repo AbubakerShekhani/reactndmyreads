@@ -4,43 +4,28 @@ import './App.css'
 import BookRack from './BookRack'
 import SearchBar from './SearchBar'
 import { Link, Route } from 'react-router-dom'
+import Loader from 'react-loader-spinner'
 
 class BooksApp extends React.Component {
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false,
-    books: [
 
-    ],
+  state = {
+    books: [],
+    isLoading: true,
     connectionSuccessful: true
   }
 
   moveBookToShelfHandler = (book, shelfName) => {
-    
-    if (shelfName !== 'none')
-    {
-      BooksAPI.update(book, shelfName)
-        .then((response) => {
-          //console.log(response);
 
-          book.shelf = shelfName
-          console.log(this.state);
+    BooksAPI.update(book, shelfName)
+      .then((response) => {
+        book.shelf = shelfName
 
-          this.setState((prevState)=>({
-            books: prevState.books
-                  .filter( prevbook => prevbook.id !== book.id)
-                  .concat( book)
-          }))
-
-
-        })
-    }
-
+        this.setState((prevState) => ({
+          books: prevState.books
+            .filter(prevbook => prevbook.id !== book.id)
+            .concat(book)
+        }))
+      })
   }
 
   searchBooks = (searchQuery) => {
@@ -54,87 +39,88 @@ class BooksApp extends React.Component {
 
   getAllBooks = () => {
     BooksAPI.getAll()
-    .then((books)=>{
-
-      this.setState({books})
-
-      /*
-      let currentlyReading = [], wantToRead = [], readBook = [];
-
-      books.map( (book) => {
-
-        const shelf = book.shelf;
-
-        if (shelf === 'currentlyReading') {
-          
-          currentlyReading.push(book);
-        } else if (shelf === 'wantToRead') {
-          
-          wantToRead.push(book);
-        }
-        else if (shelf === 'read') {
-          
-          readBook.push(book);
-        }
-        
-      }
-      
-      )*/
-
-      this.setState({
-        
-        connectionSuccessful: true 
-
+      .then((books) => {
+        this.setState({
+          books,
+          connectionSuccessful: true,
+          isLoading: false
+        })
+      }).catch((err) => {
+        this.setState({
+          connectionSuccessful: false,
+          isLoading: false
+        });
       })
-      
-   
-      
-    }).catch((err)=>{
-      this.setState({ connectionSuccessful: false });
-      console.log(err)
-    })
 
     return 1;
   }
 
   componentDidMount() {
-    this.getAllBooks();      
+    this.getAllBooks();
   }
 
   render() {
-    
+
     const books = this.state.books;
+    const isLoading = this.state.isLoading;
 
     return (
       <div className="app">
-        { (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
+        {isLoading ?
+          (
+            <div style={{
+              position: 'fixed',
+              top: '0px',
+              left: '0px',
+              bottom: '0px',
+              right: '0px',
+              display: 'flex',
+              alignItems: 'center',
+              overflow: 'auto'
+            }}>
+              <div style={{
+                margin: 'auto',
+                maxHeight: '100%'
+              }} >
+                <Loader
+                  type="Grid"
+                  color="#2e7c31"
+                  height="100"
+                  width="100"
+                />
+              </div>
+            </div>)
 
-          {  (!this.state.connectionSuccessful) ?
-              <div>Loading</div>
-            : (
-                <Route exact path='/' render={() => (
-                  <BookRack 
-                    books={books}
-                    onMoveBookToShelfHandler ={this.moveBookToShelfHandler }
+          :
+
+          (
+            <div className="list-books">
+              <div className="list-books-title">
+                <h1>MyReads</h1>
+              </div>
+
+              {(!this.state.connectionSuccessful) ?
+                <div>There is some issue loading the page.</div>
+                : (
+                  <Route exact path="/" render={() => (
+                    <BookRack
+                      books={books}
+                      onMoveBookToShelfHandler={this.moveBookToShelfHandler}
+                    />
+                  )}
                   />
-                )}
-              />
-            )
-          }  
+                )
+              }
 
-            <Route exact path='/search' render={() => (
-              <SearchBar onSearchTextChange={this.searchBooks} onMoveBookToShelfHandler={this.moveBookToShelfHandler} />
-            )} />
-            <div className="open-search">
+              <Route exact path="/search" render={() => (
+                <SearchBar onSearchTextChange={this.searchBooks} onMoveBookToShelfHandler={this.moveBookToShelfHandler} />
+              )} />
+              <div className="open-search">
                 <Link to='/search'><button>Add Book</button></Link>
+              </div>
             </div>
-          </div>
-          
-        )}
+
+          )}
       </div>
     )
   }
