@@ -113,7 +113,7 @@ class BooksApp extends React.Component {
               }
 
               <Route exact path="/search" render={() => (
-                <SearchBar onSearchTextChange={this.searchBooks} onMoveBookToShelfHandler={this.moveBookToShelfHandler} />
+                <SearchBar mybooks={books} onSearchTextChange={this.searchBooks} onMoveBookToShelfHandler={this.moveBookToShelfHandler} />
               )} />
               <div className="open-search">
                 <Link to='/search'><button>Add Book</button></Link>

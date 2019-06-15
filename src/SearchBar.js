@@ -6,10 +6,18 @@ import BookInShelf from './BookInShelf';
 
 class SearchBar extends Component {
 
+  mybooks = [];
+
   state = {
     searchQuery: '',
     books: []
   };
+
+  constructor(props) {
+    super(props);
+    this.mybooks = this.props.mybooks;
+
+  }
 
   updateQuery = (query) => {
     this.setState({
@@ -21,9 +29,14 @@ class SearchBar extends Component {
         .then((booksresult) => {
 
           booksresult.length > 0 ?
+
+
             this.setState({
               books: booksresult,
-            }) :
+            })
+
+            :
+
             this.setState({
               books: [],
             })
@@ -53,6 +66,12 @@ class SearchBar extends Component {
     const booksSearchResult = this.state.books;
     const searchQuery = this.state.searchQuery;
 
+    booksSearchResult.forEach((bookResult)=>this.mybooks.forEach((mb)=>{
+      if (bookResult.id === mb.id) {
+        bookResult.shelf = mb.shelf;
+      }
+    }))
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -65,7 +84,9 @@ class SearchBar extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             { searchQuery.length > 0 &&
-              booksSearchResult.length > 0 && booksSearchResult.map((book) => (
+                booksSearchResult.length > 0 &&
+                booksSearchResult.map((book) => (
+
                 <li key={book.id}>
                   <BookInShelf
                     book={book}
