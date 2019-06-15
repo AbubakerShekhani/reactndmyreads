@@ -7,13 +7,13 @@ NPM
 
 # Application Screen
 <h2>Main Screen</h2>
-<img src="images/MainPage.JPG" width="500">
+<img src="images/MainPage.JPG" width="800">
 
 <h2>Move to Shelf</h2>
-<img src="images/MoveToShelf.jpg" width="500">
+<img src="images/MoveToShelf.jpg" width="800">
 
 <h2>Search</h2>
-<img src="images/Search.jpg" width="500">
+<img src="images/Search.jpg" width="800">
 
 # Installation
 
