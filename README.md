@@ -5,6 +5,15 @@ This is the first project of React Nanodegree program. MyReads application displ
 Node<br>
 NPM
 
+# Application Screen
+<h2>Main Screen</h2>
+<img src="images/MainPage.JPG" width="500">
+
+<h2>Move to Shelf</h2>
+<img src="images/MoveToShelf.jpg" width="500">
+
+<h2>Search</h2>
+<img src="images/Search.jpg" width="500">
 
 # Installation
 
